@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useInvoiceStore } from "@/store/useInvoiceStore";
 import { useHydration } from "@/hooks/useHydration";
+import ItemRow from "@/components/ItemRow";
 
 export default function Step2() {
   const router = useRouter();
@@ -25,24 +26,11 @@ export default function Step2() {
       <h1 className="text-xl font-bold">Step 2 - Data Barang</h1>
 
       {items.map((item, idx) => (
-        <div key={idx} className="border p-3 space-y-2">
-          <input
-            placeholder="Kode Barang"
-            className="border p-2 w-full"
-            value={item.code}
-            onChange={(e) => updateItem(idx, "code", e.target.value)}
-          />
-
-          <input
-            type="number"
-            placeholder="Qty"
-            className="border p-2 w-full"
-            value={item.quantity}
-            onChange={(e) =>
-              updateItem(idx, "quantity", Number(e.target.value))
-            }
-          />
-        </div>
+        <ItemRow
+          key={idx}
+          item={item}
+          onChange={(field, value) => updateItem(idx, field, value)}
+        />
       ))}
 
       <button onClick={addItem} className="bg-gray-200 px-3 py-2">
