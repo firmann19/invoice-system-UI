@@ -1,13 +1,13 @@
 import { jwtDecode } from "jwt-decode";
 
-type TokenPayload = {
+export type TokenPayload = {
   user_id: number;
-  role: string;
+  role: "admin" | "kerani";
 };
 
 export function getUserFromToken(token: string): TokenPayload | null {
   try {
-    return jwtDecode(token);
+    return jwtDecode<TokenPayload>(token);
   } catch {
     return null;
   }

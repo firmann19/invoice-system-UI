@@ -2,26 +2,38 @@ import { useRouter } from "next/router";
 import { useInvoiceStore } from "@/store/useInvoiceStore";
 import { useHydration } from "@/hooks/useHydration";
 import api from "@/lib/axios";
+import { getUserRole } from "@/lib/role";
+import { transformPayload } from "@/lib/transformPayload";
 
 export default function Step3() {
   const router = useRouter();
   const hydrated = useHydration();
 
-  const { senderName, senderAddress, receiverName, receiverAddress, items } =
-    useInvoiceStore();
+  const { senderName, receiverName, items } = useInvoiceStore();
 
   const handleSubmit = async () => {
     try {
-      await api.post("/invoices", {
+      const role = getUserRole();
+
+      const {
+        senderName,
+        senderAddress,
+        receiverName,
+        receiverAddress,
+        items,
+      } = useInvoiceStore.getState();
+
+      const payload = {
         sender_name: senderName,
         sender_address: senderAddress,
         receiver_name: receiverName,
         receiver_address: receiverAddress,
-        items,
-      });
+        items: transformPayload(items, role),
+      };
+
+      await api.post("/invoices", payload);
 
       alert("Invoice berhasil dibuat");
-      router.push("/invoice/step-1");
     } catch (err) {
       alert("Gagal submit invoice");
     }
