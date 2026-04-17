@@ -1,0 +1,17 @@
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .print-area {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 20mm;
+    font-size: 12px;
+    color: black;
+  }
+
+  body {
+    background: white;
+  }
+}
